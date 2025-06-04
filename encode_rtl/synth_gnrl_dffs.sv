@@ -37,7 +37,7 @@
 //
 // ===========================================================================
 `include "defines.v"
-
+//s:set
 module synth_gnrl_dfflrs # (
   parameter DW = 32
 ) (
