@@ -29,13 +29,14 @@ module Sorter2(
 /*******************************************************************************/
 /*                              Parameter                                      */
 /*******************************************************************************/
-parameter  PM_WIDTH = 8;
-localparam L        = 2;
+parameter  PM_WIDTH    = 8;
+parameter  INDEX_WIDTH = 2;
+localparam L           = 2;
 /*******************************************************************************/
 /*                              IO Direction                                   */
 /*******************************************************************************/
-input  [PM_WIDTH*2*L-1:0] PM_in;
-output [PM_WIDTH*L-1:0]   PM_out;
+input  [PM_WIDTH*2*L-1:0]               PM_in;
+output [(PM_WIDTH+INDEX_WIDTH)*L-1:0]   PM_out;
 /*******************************************************************************/
 /*                              Signal Declaration                             */
 /*******************************************************************************/
@@ -46,10 +47,10 @@ wire [PM_WIDTH-1:0] m2_0;
 wire [PM_WIDTH-1:0] m3_0;
 
 // 第一阶段
-wire [PM_WIDTH-1:0] m0_1;
-wire [PM_WIDTH-1:0] m1_1;
-wire [PM_WIDTH-1:0] m2_1;
-wire [PM_WIDTH-1:0] m3_1;
+wire [PM_WIDTH+INDEX_WIDTH-1:0] m0_1;
+wire [PM_WIDTH+INDEX_WIDTH-1:0] m1_1;
+wire [PM_WIDTH+INDEX_WIDTH-1:0] m2_1;
+wire [PM_WIDTH+INDEX_WIDTH-1:0] m3_1;
 /*******************************************************************************/
 /*                              Instance                                       */
 /*******************************************************************************/
@@ -60,7 +61,7 @@ assign {m0_0, m1_0, m2_0, m3_0} = PM_in;
 assign PM_out = {m0_1, m1_1};
 
 // 第一阶段
-assign m0_1 = m0_0;
-CAS #(.PM_WIDTH(PM_WIDTH)) CAS_11 (.Din0(m1_0), .Din1(m2_0), .Dout0(m1_1), .Dout1(m2_1));
-assign m3_1 = m3_0;
+assign m0_1 = {2'd0, m0_0};
+CAS #(.PM_WIDTH(PM_WIDTH), .INDEX_WIDTH(INDEX_WIDTH)) CAS_11 (.Din0({2'd1, m1_0}), .Din1({2'd2, m2_0}), .Dout0(m1_1), .Dout1(m2_1));
+assign m3_1 = {2'd3, m3_0};
 endmodule

@@ -27,14 +27,15 @@ module CAS(
 /*******************************************************************************/
 /*                              Parameter                                      */
 /*******************************************************************************/
-parameter PM_WIDTH = 8;
+parameter PM_WIDTH    = 8;
+parameter INDEX_WIDTH = 3;
 /*******************************************************************************/
 /*                              IO Direction                                   */
 /*******************************************************************************/
-input  [PM_WIDTH-1:0] Din0;
-input  [PM_WIDTH-1:0] Din1;
-output [PM_WIDTH-1:0] Dout0;
-output [PM_WIDTH-1:0] Dout1;
+input  [PM_WIDTH+INDEX_WIDTH-1:0] Din0;
+input  [PM_WIDTH+INDEX_WIDTH-1:0] Din1;
+output [PM_WIDTH+INDEX_WIDTH-1:0] Dout0;
+output [PM_WIDTH+INDEX_WIDTH-1:0] Dout1;
 /*******************************************************************************/
 /*                              Signal Declaration                             */
 /*******************************************************************************/
@@ -44,6 +45,6 @@ output [PM_WIDTH-1:0] Dout1;
 /*******************************************************************************/
 /*                              Logic                                          */
 /*******************************************************************************/
-assign Dout0 = Din0 < Din1 ? Din0 : Din1;
-assign Dout1 = Din0 < Din1 ? Din1 : Din0;
+assign Dout0 = Din0[PM_WIDTH-1:0] < Din1[PM_WIDTH-1:0] ? Din0 : Din1;
+assign Dout1 = Din0[PM_WIDTH-1:0] < Din1[PM_WIDTH-1:0] ? Din1 : Din0;
 endmodule
